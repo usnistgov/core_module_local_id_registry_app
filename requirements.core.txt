@@ -1,0 +1,2 @@
+core-parser-app==1.0.0-beta3
+core-main-registry-app==1.0.0-alpha2
