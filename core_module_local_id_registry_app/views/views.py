@@ -20,16 +20,16 @@ class LocalIdRegistryModule(AbstractInputModule):
         Returns:
 
         """
-        data = ''
-        if request.method == 'GET':
-            if 'data' in request.GET:
-                data = request.GET['data']
+        data = ""
+        if request.method == "GET":
+            if "data" in request.GET:
+                data = request.GET["data"]
             else:
                 data = generate_unique_local_id(LOCAL_ID_LENGTH)
             self.default_value = data
-        elif request.method == 'POST':
-            if 'data' in request.POST:
-                data = request.POST['data']
+        elif request.method == "POST":
+            if "data" in request.POST:
+                data = request.POST["data"]
         return data
 
     def _render_data(self, request):
@@ -41,4 +41,4 @@ class LocalIdRegistryModule(AbstractInputModule):
         Returns:
 
         """
-        return ''
+        return ""
