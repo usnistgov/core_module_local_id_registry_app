@@ -7,8 +7,7 @@ from core_parser_app.tools.modules.views.builtin.input_module import AbstractInp
 
 class LocalIdRegistryModule(AbstractInputModule):
     def __init__(self):
-        """ Initialize module
-        """
+        """Initialize module"""
         placeholder = (
             "A PID will be generated for this resource"
             if "core_linked_records_app" in INSTALLED_APPS
@@ -18,7 +17,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         AbstractInputModule.__init__(self, disabled=True, placeholder=placeholder)
 
     def _retrieve_data(self, request):
-        """ Retrieve module's data
+        """Retrieve module's data
 
         Args:
             request:
@@ -42,7 +41,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         return data
 
     def _render_data(self, request):
-        """ Return module's data rendering
+        """Return module's data rendering
 
         Args:
             request:
