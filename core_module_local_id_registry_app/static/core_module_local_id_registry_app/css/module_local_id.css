@@ -1,0 +1,10 @@
+/* Align module element horizontally and ensure wrapping in case of overflow */
+div.mod-local-id {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Align module text horizontally */
+div.mod-local-id div.text {
+    margin: 0.3em 0.1em;
+}

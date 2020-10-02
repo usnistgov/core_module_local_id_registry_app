@@ -15,3 +15,7 @@ LOCAL_ID_LENGTH = getattr(settings, "LOCAL_ID_LENGTH", 20)
 INSTALLED_APPS = getattr(settings, "INSTALLED_APPS", [])
 """ :py:class:`list`: List of apps installed.
 """
+
+SERVER_URI = getattr(settings, "SERVER_URI", "http://localhost")
+""" str: URI of the server
+"""
