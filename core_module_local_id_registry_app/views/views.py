@@ -1,10 +1,6 @@
 """ Local Id Registry Module
 """
-import json
 from re import match
-from urllib.parse import urljoin
-
-from django.urls import reverse
 
 from core_curate_app.components.curate_data_structure import (
     api as curate_data_structure_api,
@@ -12,10 +8,10 @@ from core_curate_app.components.curate_data_structure import (
 from core_main_app.utils.requests_utils.requests_utils import send_get_request
 from core_main_registry_app.components.data.api import generate_unique_local_id
 from core_module_local_id_registry_app import settings
-from core_parser_app.tools.modules.views.builtin.input_module import AbstractInputModule
 from core_parser_app.components.data_structure_element import (
     api as data_structure_element_api,
 )
+from core_parser_app.tools.modules.views.builtin.input_module import AbstractInputModule
 
 
 class LocalIdRegistryModule(AbstractInputModule):
@@ -65,28 +61,31 @@ class LocalIdRegistryModule(AbstractInputModule):
         )
 
     def _init_prefix_and_record(self, data, curate_data_structure_id, user):
+        """Helper function to determine prefix and record from a module
+
+        Args:
+            data:
+            curate_data_structure_id:
+            user:
+
+        Returns:
+        """
+        from core_linked_records_app.utils.dict import get_dict_value_from_key_list
+        from core_linked_records_app.utils.providers import ProviderManager
+
         # If data is not empty and linked records installed, get record name and
         # prefix.
         record_host_pid_url = None
-        settings_host_pid_url = None
+        settings_host_pid_url = (
+            ProviderManager().get(self.pid_settings["systems"][0]).provider_url
+        )
 
         try:
             data_split = data.split("/")
 
             record_host_pid_url = "/".join(data_split[:-2])
-            self.default_value = data_split[-1]
+            self.default_value = data_split[-1].strip(" ")
             self.default_prefix = data_split[-2]
-
-            settings_host_pid_url = urljoin(
-                settings.SERVER_URI,
-                reverse(
-                    "core_linked_records_app_rest_provider_record_view",
-                    kwargs={
-                        "provider": self.pid_settings["systems"][0],
-                        "record": "",
-                    },
-                ),
-            )[:-1]
 
             assert record_host_pid_url == settings_host_pid_url
             assert self.default_prefix in self.pid_settings["prefixes"]
@@ -99,7 +98,9 @@ class LocalIdRegistryModule(AbstractInputModule):
             assert record_format_match is not None
 
             # Check that the URL is not already assigned.
-            record_response = send_get_request("%s?format=json" % data)
+            record_response = send_get_request(
+                "%s?format=json" % data, allow_redirects=False
+            )
 
             # Retrieve curate datastructure associated with the current form. Used
             # to check if the data being edited is the same as the one with the
@@ -110,8 +111,11 @@ class LocalIdRegistryModule(AbstractInputModule):
 
             assert record_response.status_code == 404 or (
                 curate_data_structure_object["data"] is not None
-                and json.loads(record_response.text)["id"]
-                == str(curate_data_structure_object["data"]["id"])
+                and get_dict_value_from_key_list(
+                    curate_data_structure_object["data"]["dict_content"],
+                    self.pid_settings["xpath"].split("."),
+                )
+                == data
             )
         except IndexError:
             self.default_prefix = None
@@ -124,6 +128,8 @@ class LocalIdRegistryModule(AbstractInputModule):
                 self.default_value = None
 
             self.error_data = data
+        finally:
+            return data if self.default_value else ""
 
     def _retrieve_data(self, request):
         """Retrieve module's data
@@ -155,11 +161,13 @@ class LocalIdRegistryModule(AbstractInputModule):
             module_id = request.POST.get("module_id")
 
         # Additional checks if linked_records is installed.
-        if data and "core_linked_records_app" in settings.INSTALLED_APPS:
+        if "core_linked_records_app" in settings.INSTALLED_APPS:
             curate_data_structure = self._get_curate_datastructure_from_module_id(
                 str(module_id), request.user
             )
-            self._init_prefix_and_record(data, curate_data_structure.pk, request.user)
+            data = self._init_prefix_and_record(
+                data, curate_data_structure.pk, request.user
+            )
 
         return data
 
@@ -180,14 +188,15 @@ class LocalIdRegistryModule(AbstractInputModule):
                 "icon": "fa-info-circle",
                 "type": "info",
                 "message": "Enter the permanent link to this data. Record "
-                "name should match %s" % self.pid_settings["format"],
+                "name should match %s. Leave blank to generate the PID "
+                "automatically." % self.pid_settings["format"],
             }
         elif self.error_data:
             context = {
                 "icon": "fa-times-circle",
                 "type": "danger",
-                "message": "Invalid local ID provided (%s). Select a valid prefix and record name."
-                % self.error_data,
+                "message": "Invalid local ID provided (%s). Select a valid "
+                "prefix and record name." % self.error_data,
             }
         else:
             context = {
@@ -213,12 +222,10 @@ class LocalIdRegistryModule(AbstractInputModule):
         module_template = super(LocalIdRegistryModule, self)._render_module(request)
 
         if "core_linked_records_app" in settings.INSTALLED_APPS:
-            pid_default_url = urljoin(
-                settings.SERVER_URI,
-                reverse(
-                    "core_linked_records_app_rest_provider_record_view",
-                    kwargs={"provider": "local", "record": ""},
-                ),
+            from core_linked_records_app.utils.providers import ProviderManager
+
+            pid_default_url = (
+                ProviderManager().get(self.pid_settings["systems"][0]).provider_url
             )
 
             context = {

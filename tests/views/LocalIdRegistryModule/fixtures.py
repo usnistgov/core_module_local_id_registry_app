@@ -1,5 +1,6 @@
 """ Fixtures for LocalId module tests
 """
+from unittest.mock import Mock
 from urllib.parse import urljoin
 
 from tests import test_settings
@@ -32,6 +33,11 @@ class MockPID(object):
                 self.value,
             ),
         )
+
+
+class MockProvider(object):
+    def __init__(self):
+        self.provider_url = str(MockPID(prefix="", value=""))[:-1]
 
 
 def mock_return_fn_args_as_dict(*args, **kwargs):
