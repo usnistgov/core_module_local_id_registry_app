@@ -51,13 +51,13 @@ class LocalIdRegistryModule(AbstractInputModule):
         )
 
     @staticmethod
-    def _get_curate_datastructure_from_module_id(module_id, user):
-        module_element = data_structure_element_api.get_by_id(module_id)
+    def _get_curate_datastructure_from_module_id(module_id, request):
+        module_element = data_structure_element_api.get_by_id(module_id, request)
         data_structure_element = data_structure_element_api.get_root_element(
-            module_element
+            module_element, request
         )
         return curate_data_structure_api.get_by_data_structure_element_root_id(
-            data_structure_element, user
+            data_structure_element, request.user
         )
 
     def _init_prefix_and_record(self, data, curate_data_structure_id, user):
@@ -163,7 +163,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         # Additional checks if linked_records is installed.
         if "core_linked_records_app" in settings.INSTALLED_APPS:
             curate_data_structure = self._get_curate_datastructure_from_module_id(
-                str(module_id), request.user
+                str(module_id), request
             )
             data = self._init_prefix_and_record(
                 data, curate_data_structure.pk, request.user
