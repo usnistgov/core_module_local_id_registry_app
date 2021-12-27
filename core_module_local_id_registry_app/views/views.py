@@ -111,7 +111,7 @@ class LocalIdRegistryModule(AbstractInputModule):
             )
 
             assert record_response.status_code == 404 or (
-                curate_data_structure_object["data"] is not None
+                curate_data_structure_object.data is not None
                 and get_dict_value_from_key_list(
                     curate_data_structure_object.data["dict_content"],
                     self.pid_settings["xpath"].split("."),
