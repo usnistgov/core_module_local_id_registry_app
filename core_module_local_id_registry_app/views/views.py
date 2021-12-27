@@ -18,6 +18,7 @@ class LocalIdRegistryModule(AbstractInputModule):
     def __init__(self):
         """Initialize module"""
         self.error_data = None
+        self.has_failed = False
 
         if "core_linked_records_app" in settings.INSTALLED_APPS:
             from core_linked_records_app import settings as linked_records_settings
@@ -112,7 +113,7 @@ class LocalIdRegistryModule(AbstractInputModule):
             assert record_response.status_code == 404 or (
                 curate_data_structure_object["data"] is not None
                 and get_dict_value_from_key_list(
-                    curate_data_structure_object["data"]["dict_content"],
+                    curate_data_structure_object.data["dict_content"],
                     self.pid_settings["xpath"].split("."),
                 )
                 == data
@@ -128,6 +129,11 @@ class LocalIdRegistryModule(AbstractInputModule):
                 self.default_value = None
 
             self.error_data = data
+        except Exception:
+            self.default_prefix = None
+            self.default_value = None
+
+            self.has_failed = True
         finally:
             return data if self.default_value else ""
 
@@ -183,7 +189,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         if "core_linked_records_app" not in settings.INSTALLED_APPS:
             return ""
 
-        if not self.default_value and not self.error_data:
+        if not self.default_value and not self.error_data and not self.has_failed:
             context = {
                 "icon": "fa-info-circle",
                 "type": "info",
@@ -197,6 +203,13 @@ class LocalIdRegistryModule(AbstractInputModule):
                 "type": "danger",
                 "message": "Invalid local ID provided (%s). Select a valid "
                 "prefix and record name." % self.error_data,
+            }
+        elif self.has_failed:
+            context = {
+                "icon": "fa-times-circle",
+                "type": "danger",
+                "message": "An unexpected error occured while checking record "
+                "existence. Please contact your administrator.",
             }
         else:
             context = {
