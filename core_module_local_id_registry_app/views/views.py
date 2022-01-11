@@ -133,7 +133,9 @@ class LocalIdRegistryModule(AbstractInputModule):
             self.default_prefix = None
             self.default_value = None
 
-            self.has_failed = True
+            # If `data` is None, a new local id needs to be generated.
+            if data is not None:  # Otherwise, there is an error.
+                self.has_failed = True
         finally:
             return data if self.default_value else ""
 
