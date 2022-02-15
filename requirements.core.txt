@@ -1,4 +1,4 @@
-core-main-app==2.0.0-alpha1
-core-curate-app==2.0.0-alpha1
-core-parser-app==2.0.0-alpha1
-core-main-registry-app==2.0.0-alpha1
+core-main-app==2.0.0-beta1
+core-curate-app==2.0.0-beta1
+core-parser-app==2.0.0-beta1
+core-main-registry-app==2.0.0-beta1
