@@ -62,7 +62,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         )
 
     def _init_prefix_and_record(self, data, curate_data_structure_id, user):
-        """Helper function to determine prefix and record from a module
+        """Helper function to determine prefix and record from a module.
 
         Args:
             data:
@@ -103,7 +103,7 @@ class LocalIdRegistryModule(AbstractInputModule):
                 "%s?format=json" % data, allow_redirects=False
             )
 
-            # Retrieve curate datastructure associated with the current form. Used
+            # Retrieve curate data structure associated with the current form. Used
             # to check if the data being edited is the same as the one with the
             # assigned PID.
             curate_data_structure_object = curate_data_structure_api.get_by_id(
@@ -113,7 +113,7 @@ class LocalIdRegistryModule(AbstractInputModule):
             assert record_response.status_code == 404 or (
                 curate_data_structure_object.data is not None
                 and get_dict_value_from_key_list(
-                    curate_data_structure_object.data["dict_content"],
+                    curate_data_structure_object.data.dict_content,
                     self.pid_settings["xpath"].split("."),
                 )
                 == data

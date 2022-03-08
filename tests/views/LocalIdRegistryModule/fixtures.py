@@ -40,6 +40,21 @@ class MockProvider(object):
         self.provider_url = str(MockPID(prefix="", value=""))[:-1]
 
 
+class MockData(object):
+    def __init__(self, pk=1, dict_content=None):
+        self.pk = pk
+        self.id = pk
+        self.dict_content = dict_content if dict_content else {}
+
+    def to_json(self):
+        return {"id": self.id, "dict_content": self.dict_content}
+
+
+class MockDataStructureApi(object):
+    def __init__(self, data=MockData()):
+        self.data = data
+
+
 def mock_return_fn_args_as_dict(*args, **kwargs):
     kwargs.update({"arg%d" % i: args[i] for i in range(len(args))})
 
