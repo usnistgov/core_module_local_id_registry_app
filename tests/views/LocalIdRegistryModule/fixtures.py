@@ -46,6 +46,9 @@ class MockData(object):
         self.id = pk
         self.dict_content = dict_content if dict_content else {}
 
+    def get_dict_content(self):
+        return self.dict_content
+
     def to_json(self):
         return {"id": self.id, "dict_content": self.dict_content}
 
