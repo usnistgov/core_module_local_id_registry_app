@@ -78,7 +78,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         # prefix.
         record_host_pid_url = None
         settings_host_pid_url = (
-            ProviderManager().get(self.pid_settings["systems"][0]).provider_url
+            ProviderManager().get(self.pid_settings["systems"][0]).provider_lookup_url
         )
 
         try:
@@ -240,7 +240,9 @@ class LocalIdRegistryModule(AbstractInputModule):
             from core_linked_records_app.utils.providers import ProviderManager
 
             pid_default_url = (
-                ProviderManager().get(self.pid_settings["systems"][0]).provider_url
+                ProviderManager()
+                .get(self.pid_settings["systems"][0])
+                .provider_lookup_url
             )
 
             context = {
