@@ -31,7 +31,7 @@ class LocalIdRegistryModule(AbstractInputModule):
             self.pid_settings = {
                 "xpath": linked_records_settings.PID_XPATH,
                 "format": linked_records_settings.PID_FORMAT,
-                "systems": list(linked_records_settings.ID_PROVIDER_SYSTEMS.keys()),
+                "system": linked_records_settings.ID_PROVIDER_SYSTEM_NAME,
                 "prefixes": linked_records_settings.ID_PROVIDER_PREFIXES,
             }
         else:
@@ -77,7 +77,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         # prefix.
         record_host_pid_url = None
         settings_host_pid_url = (
-            ProviderManager().get(self.pid_settings["systems"][0]).provider_lookup_url
+            ProviderManager().get(self.pid_settings["system"]).provider_lookup_url
         )
 
         try:
@@ -225,9 +225,7 @@ class LocalIdRegistryModule(AbstractInputModule):
             from core_linked_records_app.utils.providers import ProviderManager
 
             pid_default_url = (
-                ProviderManager()
-                .get(self.pid_settings["systems"][0])
-                .provider_lookup_url
+                ProviderManager().get(self.pid_settings["system"]).provider_lookup_url
             )
 
             context = {
