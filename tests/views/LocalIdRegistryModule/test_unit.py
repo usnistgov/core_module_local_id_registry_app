@@ -57,7 +57,7 @@ class TestLocalIdRegistryModuleInitWithPID(TestCase):
             {
                 "xpath": test_settings.PID_XPATH,
                 "format": test_settings.PID_FORMAT,
-                "systems": list(test_settings.ID_PROVIDER_SYSTEMS.keys()),
+                "system": test_settings.ID_PROVIDER_SYSTEM_NAME,
                 "prefixes": test_settings.ID_PROVIDER_PREFIXES,
             },
         )

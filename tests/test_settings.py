@@ -32,7 +32,7 @@ PID_XPATH = "mock.xpath"
 
 PID_FORMAT = r"[a-zA-Z0-9_\-]+"
 
-ID_PROVIDER_SYSTEMS = {"mock_provider": None}
+ID_PROVIDER_SYSTEM_NAME = "mock_provider"
 
 ID_PROVIDER_PREFIXES = ["mock_prefix"]
 
