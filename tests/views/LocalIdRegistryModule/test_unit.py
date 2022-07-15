@@ -315,10 +315,10 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
-    @patch("core_linked_records_app.utils.dict.get_dict_value_from_key_list")
+    @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_keeps_prefix(
         self,
-        mock_get_dict_value_from_key_list,
+        mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
         mock_send_get_request,
     ):
@@ -327,7 +327,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             text=json.dumps(mock_data), status_code=200
         )
         mock_curate_data_structure_api_get_by_id.return_value = {"data": mock_data}
-        mock_get_dict_value_from_key_list.return_value = str(MockPID())
+        mock_get_value_from_dot_notation.return_value = str(MockPID())
 
         self.module._init_prefix_and_record(*self.setDefaultTestData(as_string=True))
 
@@ -337,10 +337,10 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
-    @patch("core_linked_records_app.utils.dict.get_dict_value_from_key_list")
+    @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_keeps_value(
         self,
-        mock_get_dict_value_from_key_list,
+        mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
         mock_send_get_request,
     ):
@@ -349,7 +349,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             text=json.dumps(mock_data), status_code=200
         )
         mock_curate_data_structure_api_get_by_id.return_value = {"data": mock_data}
-        mock_get_dict_value_from_key_list.return_value = str(MockPID())
+        mock_get_value_from_dot_notation.return_value = str(MockPID())
 
         self.module._init_prefix_and_record(*self.setDefaultTestData(as_string=True))
 
@@ -357,10 +357,10 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
-    @patch("core_linked_records_app.utils.dict.get_dict_value_from_key_list")
+    @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_sets_error_data_to_none(
         self,
-        mock_get_dict_value_from_key_list,
+        mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
         mock_send_get_request,
     ):
@@ -369,7 +369,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             text=json.dumps(mock_data), status_code=200
         )
         mock_curate_data_structure_api_get_by_id.return_value = {"data": mock_data}
-        mock_get_dict_value_from_key_list.return_value = str(MockPID())
+        mock_get_value_from_dot_notation.return_value = str(MockPID())
 
         self.module._init_prefix_and_record(*self.setDefaultTestData(as_string=True))
 
@@ -377,10 +377,10 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
-    @patch("core_linked_records_app.utils.dict.get_dict_value_from_key_list")
+    @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_keeps_prefix(
         self,
-        mock_get_dict_value_from_key_list,
+        mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
         mock_send_get_request,
     ):
@@ -390,7 +390,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             text=json.dumps(mock_data_1), status_code=200
         )
         mock_curate_data_structure_api_get_by_id.return_value = {"data": mock_data_2}
-        mock_get_dict_value_from_key_list.return_value = str(
+        mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
         )
 
@@ -406,10 +406,10 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
-    @patch("core_linked_records_app.utils.dict.get_dict_value_from_key_list")
+    @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_keeps_value(
         self,
-        mock_get_dict_value_from_key_list,
+        mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
         mock_send_get_request,
     ):
@@ -419,7 +419,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             text=json.dumps(mock_data_1), status_code=200
         )
         mock_curate_data_structure_api_get_by_id.return_value = {"data": mock_data_2}
-        mock_get_dict_value_from_key_list.return_value = str(
+        mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
         )
 
@@ -435,10 +435,10 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
-    @patch("core_linked_records_app.utils.dict.get_dict_value_from_key_list")
+    @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_sets_error_data(
         self,
-        mock_get_dict_value_from_key_list,
+        mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
         mock_send_get_request,
     ):
@@ -448,7 +448,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             text=json.dumps(mock_data_1), status_code=200
         )
         mock_curate_data_structure_api_get_by_id.return_value = {"data": mock_data_2}
-        mock_get_dict_value_from_key_list.return_value = str(
+        mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
         )
 

@@ -70,7 +70,7 @@ class LocalIdRegistryModule(AbstractInputModule):
 
         Returns:
         """
-        from core_linked_records_app.utils.dict import get_dict_value_from_key_list
+        from core_linked_records_app.utils.dict import get_value_from_dot_notation
         from core_linked_records_app.utils.providers import ProviderManager
 
         # If data is not empty and linked records installed, get record name and
@@ -111,9 +111,9 @@ class LocalIdRegistryModule(AbstractInputModule):
 
             assert record_response.status_code == 404 or (
                 curate_data_structure_object["data"] is not None
-                and get_dict_value_from_key_list(
+                and get_value_from_dot_notation(
                     curate_data_structure_object["data"]["dict_content"],
-                    self.pid_settings["xpath"].split("."),
+                    self.pid_settings["xpath"],
                 )
                 == data
             )
