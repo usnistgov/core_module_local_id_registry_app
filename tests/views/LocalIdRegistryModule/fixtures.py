@@ -5,13 +5,17 @@ from urllib.parse import urljoin
 from tests import test_settings
 
 
-class MockResponse(object):
+class MockResponse:
+    """Mock Response"""
+
     def __init__(self, text, status_code):
         self.status_code = status_code
         self.text = text
 
 
-class MockPID(object):
+class MockPID:
+    """Mock PID"""
+
     def __init__(self, host_url=None, provider=None, prefix=None, value=None):
         self.host_url = test_settings.SERVER_URI if host_url is None else host_url
         self.provider = (
@@ -32,30 +36,48 @@ class MockPID(object):
         )
 
 
-class MockProvider(object):
+class MockProvider:
+    """Mock Provider"""
+
     def __init__(self):
         self.provider_lookup_url = str(MockPID(prefix="", value=""))[:-1]
 
 
-class MockData(object):
+class MockData:
+    """MockData"""
+
     def __init__(self, pk=1, dict_content=None):
         self.pk = pk
         self.id = pk
         self.dict_content = dict_content if dict_content else {}
 
     def get_dict_content(self):
+        """get_dict_content
+
+        Returns:
+        """
         return self.dict_content
 
     def to_json(self):
+        """to_json
+
+        Returns:
+        """
         return {"id": self.id, "dict_content": self.dict_content}
 
 
-class MockDataStructureApi(object):
+class MockDataStructureApi:
+    """Mock Data Structure Api"""
+
     def __init__(self, data=MockData()):
         self.data = data
 
 
 def mock_return_fn_args_as_dict(*args, **kwargs):
+    """mock_return_fn_args_as_dict
+
+    Returns:
+    """
     kwargs.update({"arg%d" % i: args[i] for i in range(len(args))})
 
     return kwargs

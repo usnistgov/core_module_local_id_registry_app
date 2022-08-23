@@ -5,16 +5,18 @@ from re import match
 from core_curate_app.components.curate_data_structure import (
     api as curate_data_structure_api,
 )
-from core_main_app.utils.requests_utils.requests_utils import send_get_request
-from core_main_registry_app.components.data.api import generate_unique_local_id
-from core_module_local_id_registry_app import settings
 from core_parser_app.components.data_structure_element import (
     api as data_structure_element_api,
 )
 from core_parser_app.tools.modules.views.builtin.input_module import AbstractInputModule
+from core_main_app.utils.requests_utils.requests_utils import send_get_request
+from core_main_registry_app.components.data.api import generate_unique_local_id
+from core_module_local_id_registry_app import settings
 
 
 class LocalIdRegistryModule(AbstractInputModule):
+    """Local Id Registry Module"""
+
     def __init__(self):
         """Initialize module"""
         self.error_data = None
@@ -234,7 +236,7 @@ class LocalIdRegistryModule(AbstractInputModule):
 
         """
         # Create the default input module
-        module_template = super(LocalIdRegistryModule, self)._render_module(request)
+        module_template = super()._render_module(request)
 
         if "core_linked_records_app" in settings.INSTALLED_APPS:
             from core_linked_records_app.utils.providers import ProviderManager
