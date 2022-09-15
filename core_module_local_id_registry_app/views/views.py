@@ -5,19 +5,22 @@ from re import match
 from core_curate_app.components.curate_data_structure import (
     api as curate_data_structure_api,
 )
-from core_main_app.utils.requests_utils.requests_utils import send_get_request
-from core_main_registry_app.components.data.api import generate_unique_local_id
-from core_module_local_id_registry_app import settings
 from core_parser_app.components.data_structure_element import (
     api as data_structure_element_api,
 )
 from core_parser_app.tools.modules.views.builtin.input_module import AbstractInputModule
+from core_main_app.utils.requests_utils.requests_utils import send_get_request
+from core_main_registry_app.components.data.api import generate_unique_local_id
+from core_module_local_id_registry_app import settings
 
 
 class LocalIdRegistryModule(AbstractInputModule):
+    """Local Id Registry Module"""
+
     def __init__(self):
         """Initialize module"""
         self.error_data = None
+        self.has_failed = False
 
         if "core_linked_records_app" in settings.INSTALLED_APPS:
             from core_linked_records_app import settings as linked_records_settings
@@ -61,7 +64,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         )
 
     def _init_prefix_and_record(self, data, curate_data_structure_id, user):
-        """Helper function to determine prefix and record from a module
+        """Helper function to determine prefix and record from a module.
 
         Args:
             data:
@@ -102,7 +105,7 @@ class LocalIdRegistryModule(AbstractInputModule):
                 "%s?format=json" % data, allow_redirects=False
             )
 
-            # Retrieve curate datastructure associated with the current form. Used
+            # Retrieve curate data structure associated with the current form. Used
             # to check if the data being edited is the same as the one with the
             # assigned PID.
             curate_data_structure_object = curate_data_structure_api.get_by_id(
@@ -110,9 +113,9 @@ class LocalIdRegistryModule(AbstractInputModule):
             )
 
             assert record_response.status_code == 404 or (
-                curate_data_structure_object["data"] is not None
+                curate_data_structure_object.data is not None
                 and get_value_from_dot_notation(
-                    curate_data_structure_object["data"]["dict_content"],
+                    curate_data_structure_object.data.get_dict_content(),
                     self.pid_settings["xpath"],
                 )
                 == data
@@ -128,6 +131,13 @@ class LocalIdRegistryModule(AbstractInputModule):
                 self.default_value = None
 
             self.error_data = data
+        except Exception:
+            self.default_prefix = None
+            self.default_value = None
+
+            # If `data` is None, a new local id needs to be generated.
+            if data is not None:  # Otherwise, there is an error.
+                self.has_failed = True
         finally:
             return data if self.default_value else ""
 
@@ -183,7 +193,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         if "core_linked_records_app" not in settings.INSTALLED_APPS:
             return ""
 
-        if not self.default_value and not self.error_data:
+        if not self.default_value and not self.error_data and not self.has_failed:
             context = {
                 "icon": "fa-info-circle",
                 "type": "info",
@@ -197,6 +207,13 @@ class LocalIdRegistryModule(AbstractInputModule):
                 "type": "danger",
                 "message": "Invalid local ID provided (%s). Select a valid "
                 "prefix and record name." % self.error_data,
+            }
+        elif self.has_failed:
+            context = {
+                "icon": "fa-times-circle",
+                "type": "danger",
+                "message": "An unexpected error occured while checking record "
+                "existence. Please contact your administrator.",
             }
         else:
             context = {
@@ -219,7 +236,7 @@ class LocalIdRegistryModule(AbstractInputModule):
 
         """
         # Create the default input module
-        module_template = super(LocalIdRegistryModule, self)._render_module(request)
+        module_template = super()._render_module(request)
 
         if "core_linked_records_app" in settings.INSTALLED_APPS:
             from core_linked_records_app.utils.providers import ProviderManager
