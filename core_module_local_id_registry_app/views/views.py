@@ -8,7 +8,9 @@ from core_curate_app.components.curate_data_structure import (
 from core_parser_app.components.data_structure_element import (
     api as data_structure_element_api,
 )
-from core_parser_app.tools.modules.views.builtin.input_module import AbstractInputModule
+from core_parser_app.tools.modules.views.builtin.input_module import (
+    AbstractInputModule,
+)
 from core_main_app.utils.requests_utils.requests_utils import send_get_request
 from core_main_registry_app.components.data.api import generate_unique_local_id
 from core_module_local_id_registry_app import settings
@@ -23,11 +25,17 @@ class LocalIdRegistryModule(AbstractInputModule):
         self.has_failed = False
 
         if "core_linked_records_app" in settings.INSTALLED_APPS:
-            from core_linked_records_app import settings as linked_records_settings
+            from core_linked_records_app import (
+                settings as linked_records_settings,
+            )
 
             placeholder = "A PID will be generated for this resource"
-            styles = ["core_module_local_id_registry_app/css/module_local_id.css"]
-            scripts = ["core_module_local_id_registry_app/js/module_local_id.js"]
+            styles = [
+                "core_module_local_id_registry_app/css/module_local_id.css"
+            ]
+            scripts = [
+                "core_module_local_id_registry_app/js/module_local_id.js"
+            ]
             disabled = False
 
             # Retrieve PID settings
@@ -55,7 +63,9 @@ class LocalIdRegistryModule(AbstractInputModule):
 
     @staticmethod
     def _get_curate_datastructure_from_module_id(module_id, request):
-        module_element = data_structure_element_api.get_by_id(module_id, request)
+        module_element = data_structure_element_api.get_by_id(
+            module_id, request
+        )
         data_structure_element = data_structure_element_api.get_root_element(
             module_element, request
         )
@@ -73,14 +83,18 @@ class LocalIdRegistryModule(AbstractInputModule):
 
         Returns:
         """
-        from core_linked_records_app.utils.dict import get_value_from_dot_notation
+        from core_linked_records_app.utils.dict import (
+            get_value_from_dot_notation,
+        )
         from core_linked_records_app.utils.providers import ProviderManager
 
         # If data is not empty and linked records installed, get record name and
         # prefix.
         record_host_pid_url = None
         settings_host_pid_url = (
-            ProviderManager().get(self.pid_settings["system"]).provider_lookup_url
+            ProviderManager()
+            .get(self.pid_settings["system"])
+            .provider_lookup_url
         )
 
         try:
@@ -162,7 +176,10 @@ class LocalIdRegistryModule(AbstractInputModule):
 
             # No data available and linked records not installed, a local ID needs to be
             # generated automatically.
-            if not data and "core_linked_records_app" not in settings.INSTALLED_APPS:
+            if (
+                not data
+                and "core_linked_records_app" not in settings.INSTALLED_APPS
+            ):
                 data = generate_unique_local_id(settings.LOCAL_ID_LENGTH)
 
             self.default_value = data
@@ -172,8 +189,10 @@ class LocalIdRegistryModule(AbstractInputModule):
 
         # Additional checks if linked_records is installed.
         if "core_linked_records_app" in settings.INSTALLED_APPS:
-            curate_data_structure = self._get_curate_datastructure_from_module_id(
-                str(module_id), request
+            curate_data_structure = (
+                self._get_curate_datastructure_from_module_id(
+                    str(module_id), request
+                )
             )
             data = self._init_prefix_and_record(
                 data, curate_data_structure.pk, request.user
@@ -193,7 +212,11 @@ class LocalIdRegistryModule(AbstractInputModule):
         if "core_linked_records_app" not in settings.INSTALLED_APPS:
             return ""
 
-        if not self.default_value and not self.error_data and not self.has_failed:
+        if (
+            not self.default_value
+            and not self.error_data
+            and not self.has_failed
+        ):
             context = {
                 "icon": "fa-info-circle",
                 "type": "info",
@@ -242,7 +265,9 @@ class LocalIdRegistryModule(AbstractInputModule):
             from core_linked_records_app.utils.providers import ProviderManager
 
             pid_default_url = (
-                ProviderManager().get(self.pid_settings["system"]).provider_lookup_url
+                ProviderManager()
+                .get(self.pid_settings["system"])
+                .provider_lookup_url
             )
 
             context = {
@@ -255,7 +280,8 @@ class LocalIdRegistryModule(AbstractInputModule):
             }
 
             module_template = AbstractInputModule.render_template(
-                "core_module_local_id_registry_app/pid_edit_input.html", context=context
+                "core_module_local_id_registry_app/pid_edit_input.html",
+                context=context,
             )
 
         return module_template

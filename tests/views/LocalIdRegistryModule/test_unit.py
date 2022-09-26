@@ -5,7 +5,9 @@ import json
 from unittest.case import TestCase
 from unittest.mock import patch, Mock
 
-from core_curate_app.components.curate_data_structure.models import CurateDataStructure
+from core_curate_app.components.curate_data_structure.models import (
+    CurateDataStructure,
+)
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_module_local_id_registry_app.views.views import LocalIdRegistryModule
 from tests import test_settings
@@ -32,7 +34,9 @@ class TestLocalIdRegistryModuleInitDefault(TestCase):
         "core_parser_app.tools.modules.views.builtin.input_module."
         "AbstractInputModule.__init__"
     )
-    def test_abstract_input_module_init_called(self, mock_abstract_input_module_init):
+    def test_abstract_input_module_init_called(
+        self, mock_abstract_input_module_init
+    ):
         """test_abstract_input_module_init_called"""
 
         LocalIdRegistryModule()
@@ -184,8 +188,12 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertEqual(self.module.error_data, mock_data)
 
-    @patch("core_module_local_id_registry_app.views.views.curate_data_structure_api")
-    def test_correct_url_sets_correct_prefix(self, mock_curate_data_structure_api):
+    @patch(
+        "core_module_local_id_registry_app.views.views.curate_data_structure_api"
+    )
+    def test_correct_url_sets_correct_prefix(
+        self, mock_curate_data_structure_api
+    ):
         """test_correct_url_sets_correct_prefix"""
 
         mock_curate_data_structure_api.return_value = None
@@ -199,8 +207,12 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertEqual(self.module.default_prefix, mock_data.prefix)
 
-    @patch("core_module_local_id_registry_app.views.views.curate_data_structure_api")
-    def test_correct_url_sets_correct_value(self, mock_curate_data_structure_api):
+    @patch(
+        "core_module_local_id_registry_app.views.views.curate_data_structure_api"
+    )
+    def test_correct_url_sets_correct_value(
+        self, mock_curate_data_structure_api
+    ):
         """test_correct_url_sets_correct_value"""
 
         mock_curate_data_structure_api.return_value = None
@@ -239,7 +251,9 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertEqual(self.module.error_data, mock_data)
 
-    def test_settings_host_url_not_equals_to_record_host_url_sets_prefix_to_none(self):
+    def test_settings_host_url_not_equals_to_record_host_url_sets_prefix_to_none(
+        self,
+    ):
         """test_settings_host_url_not_equals_to_record_host_url_sets_prefix_to_none"""
 
         mock_data = str(MockPID(provider="mock_not_default_provider"))
@@ -251,7 +265,9 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertIsNone(self.module.default_prefix)
 
-    def test_settings_host_url_not_equals_to_record_host_url_sets_value_to_none(self):
+    def test_settings_host_url_not_equals_to_record_host_url_sets_value_to_none(
+        self,
+    ):
         """test_settings_host_url_not_equals_to_record_host_url_sets_value_to_none"""
 
         mock_data = str(MockPID(provider="mock_not_default_provider"))
@@ -263,7 +279,9 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertIsNone(self.module.default_value)
 
-    def test_settings_host_url_not_equals_to_record_host_url_sets_error_data(self):
+    def test_settings_host_url_not_equals_to_record_host_url_sets_error_data(
+        self,
+    ):
         """test_settings_host_url_not_equals_to_record_host_url_sets_error_data"""
 
         mock_data = str(MockPID(provider="mock_not_default_provider"))
@@ -348,42 +366,60 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         self.assertEqual(self.module.error_data, mock_data)
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
-    @patch("core_module_local_id_registry_app.views.views.curate_data_structure_api")
+    @patch(
+        "core_module_local_id_registry_app.views.views.curate_data_structure_api"
+    )
     def test_unexisting_record_keeps_prefix(
         self, mock_curate_data_structure_api, mock_send_get_request
     ):
         """test_unexisting_record_keeps_prefix"""
 
         mock_curate_data_structure_api.return_value = None
-        mock_send_get_request.return_value = MockResponse(text="", status_code=404)
+        mock_send_get_request.return_value = MockResponse(
+            text="", status_code=404
+        )
 
-        self.module._init_prefix_and_record(*self.set_default_test_data(as_string=True))
+        self.module._init_prefix_and_record(
+            *self.set_default_test_data(as_string=True)
+        )
         self.assertIsNotNone(self.module.default_prefix)
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
-    @patch("core_module_local_id_registry_app.views.views.curate_data_structure_api")
+    @patch(
+        "core_module_local_id_registry_app.views.views.curate_data_structure_api"
+    )
     def test_unexisting_record_keeps_value(
         self, mock_curate_data_structure_api, mock_send_get_request
     ):
         """test_unexisting_record_keeps_value"""
 
         mock_curate_data_structure_api.return_value = None
-        mock_send_get_request.return_value = MockResponse(text="", status_code=404)
+        mock_send_get_request.return_value = MockResponse(
+            text="", status_code=404
+        )
 
-        self.module._init_prefix_and_record(*self.set_default_test_data(as_string=True))
+        self.module._init_prefix_and_record(
+            *self.set_default_test_data(as_string=True)
+        )
         self.assertIsNotNone(self.module.default_value)
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
-    @patch("core_module_local_id_registry_app.views.views.curate_data_structure_api")
+    @patch(
+        "core_module_local_id_registry_app.views.views.curate_data_structure_api"
+    )
     def test_unexisting_record_sets_error_data_to_none(
         self, mock_curate_data_structure_api, mock_send_get_request
     ):
         """test_unexisting_record_sets_error_data_to_none"""
 
         mock_curate_data_structure_api.return_value = None
-        mock_send_get_request.return_value = MockResponse(text="", status_code=404)
+        mock_send_get_request.return_value = MockResponse(
+            text="", status_code=404
+        )
 
-        self.module._init_prefix_and_record(*self.set_default_test_data(as_string=True))
+        self.module._init_prefix_and_record(
+            *self.set_default_test_data(as_string=True)
+        )
         self.assertIsNone(self.module.error_data)
 
     @patch("core_module_local_id_registry_app.views.views.send_get_request")
@@ -401,12 +437,14 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         mock_send_get_request.return_value = MockResponse(
             text=json.dumps(mock_data.to_json()), status_code=200
         )
-        mock_curate_data_structure_api_get_by_id.return_value = MockDataStructureApi(
-            data=mock_data
+        mock_curate_data_structure_api_get_by_id.return_value = (
+            MockDataStructureApi(data=mock_data)
         )
         mock_get_value_from_dot_notation.return_value = str(MockPID())
 
-        self.module._init_prefix_and_record(*self.set_default_test_data(as_string=True))
+        self.module._init_prefix_and_record(
+            *self.set_default_test_data(as_string=True)
+        )
 
         self.assertEqual(
             self.module.default_prefix, self.set_default_test_data()[0].prefix
@@ -427,12 +465,14 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         mock_send_get_request.return_value = MockResponse(
             text=json.dumps(mock_data.to_json()), status_code=200
         )
-        mock_curate_data_structure_api_get_by_id.return_value = MockDataStructureApi(
-            data=mock_data
+        mock_curate_data_structure_api_get_by_id.return_value = (
+            MockDataStructureApi(data=mock_data)
         )
         mock_get_value_from_dot_notation.return_value = str(MockPID())
 
-        self.module._init_prefix_and_record(*self.set_default_test_data(as_string=True))
+        self.module._init_prefix_and_record(
+            *self.set_default_test_data(as_string=True)
+        )
 
         self.assertEqual(
             self.module.default_value, self.set_default_test_data()[0].value
@@ -453,10 +493,14 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         mock_send_get_request.return_value = MockResponse(
             text=json.dumps(mock_data), status_code=200
         )
-        mock_curate_data_structure_api_get_by_id.return_value = {"data": mock_data}
+        mock_curate_data_structure_api_get_by_id.return_value = {
+            "data": mock_data
+        }
         mock_get_value_from_dot_notation.return_value = str(MockPID())
 
-        self.module._init_prefix_and_record(*self.set_default_test_data(as_string=True))
+        self.module._init_prefix_and_record(
+            *self.set_default_test_data(as_string=True)
+        )
 
         self.assertIsNone(self.module.error_data)
 
@@ -476,8 +520,8 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         mock_send_get_request.return_value = MockResponse(
             text=json.dumps(mock_data_1.to_json()), status_code=200
         )
-        mock_curate_data_structure_api_get_by_id.return_value = MockDataStructureApi(
-            data=mock_data_2
+        mock_curate_data_structure_api_get_by_id.return_value = (
+            MockDataStructureApi(data=mock_data_2)
         )
         mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
@@ -509,8 +553,8 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         mock_send_get_request.return_value = MockResponse(
             text=json.dumps(mock_data_1.to_json()), status_code=200
         )
-        mock_curate_data_structure_api_get_by_id.return_value = MockDataStructureApi(
-            data=mock_data_2
+        mock_curate_data_structure_api_get_by_id.return_value = (
+            MockDataStructureApi(data=mock_data_2)
         )
         mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
@@ -542,8 +586,8 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         mock_send_get_request.return_value = MockResponse(
             text=json.dumps(mock_data_1.to_json()), status_code=200
         )
-        mock_curate_data_structure_api_get_by_id.return_value = MockDataStructureApi(
-            data=mock_data_2
+        mock_curate_data_structure_api_get_by_id.return_value = (
+            MockDataStructureApi(data=mock_data_2)
         )
         mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
@@ -606,7 +650,9 @@ class TestLocalIdRegistryModuleGetRetrieveDataWithPID(TestCase):
         "_init_prefix_and_record"
     )
     def test_data_is_set_to_request_param(
-        self, mock_init_prefix_and_record, mock_get_curate_datastructure_from_module_id
+        self,
+        mock_init_prefix_and_record,
+        mock_get_curate_datastructure_from_module_id,
     ):
         """test_data_is_set_to_request_param"""
 
@@ -621,7 +667,9 @@ class TestLocalIdRegistryModuleGetRetrieveDataWithPID(TestCase):
 
         self.assertEqual(result, mock_request_data)
 
-    @patch("core_module_local_id_registry_app.views.views.generate_unique_local_id")
+    @patch(
+        "core_module_local_id_registry_app.views.views.generate_unique_local_id"
+    )
     @patch(
         "core_module_local_id_registry_app.views.views.LocalIdRegistryModule."
         "_get_curate_datastructure_from_module_id"
@@ -649,7 +697,9 @@ class TestLocalIdRegistryModuleGetRetrieveDataWithPID(TestCase):
         "_init_prefix_and_record"
     )
     def test_value_is_set_to_data(
-        self, mock_init_prefix_and_record, mock_get_curate_datastructure_from_module_id
+        self,
+        mock_init_prefix_and_record,
+        mock_get_curate_datastructure_from_module_id,
     ):
         """test_value_is_set_to_data"""
 
@@ -671,7 +721,9 @@ class TestLocalIdRegistryModuleGetRetrieveDataWithPID(TestCase):
         "_init_prefix_and_record"
     )
     def test_init_prefix_and_record_called_if_data_is(
-        self, mock_init_prefix_and_record, mock_get_curate_datastructure_from_module_id
+        self,
+        mock_init_prefix_and_record,
+        mock_get_curate_datastructure_from_module_id,
     ):
         """test_init_prefix_and_record_called_if_data_is"""
 
@@ -693,7 +745,9 @@ class TestLocalIdRegistryModuleGetRetrieveDataWithPID(TestCase):
         "_init_prefix_and_record"
     )
     def test_init_prefix_and_record_called_if_data_is_none(
-        self, mock_init_prefix_and_record, mock_get_curate_datastructure_from_module_id
+        self,
+        mock_init_prefix_and_record,
+        mock_get_curate_datastructure_from_module_id,
     ):
         """test_init_prefix_and_record_called_if_data_is_none"""
 
@@ -718,8 +772,12 @@ class TestLocalIdRegistryModuleGetRetrieveDataWithoutPID(TestCase):
         self.request.method = "GET"
         self.request.GET = dict()
 
-    @patch("core_module_local_id_registry_app.views.views.generate_unique_local_id")
-    def test_data_is_set_if_not_in_request(self, mock_generate_unique_local_id):
+    @patch(
+        "core_module_local_id_registry_app.views.views.generate_unique_local_id"
+    )
+    def test_data_is_set_if_not_in_request(
+        self, mock_generate_unique_local_id
+    ):
         """test_data_is_set_if_not_in_request"""
 
         mock_generated_data = "mock_generated_data"
@@ -738,8 +796,12 @@ class TestLocalIdRegistryModuleGetRetrieveDataWithoutPID(TestCase):
 
         self.assertEqual(result, mock_request_data)
 
-    @patch("core_module_local_id_registry_app.views.views.generate_unique_local_id")
-    def test_generate_unique_local_id_called(self, mock_generate_unique_local_id):
+    @patch(
+        "core_module_local_id_registry_app.views.views.generate_unique_local_id"
+    )
+    def test_generate_unique_local_id_called(
+        self, mock_generate_unique_local_id
+    ):
         """test_generate_unique_local_id_called"""
 
         self.module._retrieve_data(self.request)
@@ -819,7 +881,9 @@ class TestLocalIdRegistryModulePostRetrieveDataWithPID(TestCase):
         "_init_prefix_and_record"
     )
     def test_data_is_set_to_request_param(
-        self, mock_init_prefix_and_record, mock_get_curate_datastructure_from_module_id
+        self,
+        mock_init_prefix_and_record,
+        mock_get_curate_datastructure_from_module_id,
     ):
         """test_data_is_set_to_request_param"""
 
@@ -842,7 +906,9 @@ class TestLocalIdRegistryModulePostRetrieveDataWithPID(TestCase):
         "_init_prefix_and_record"
     )
     def test_init_prefix_and_record_called_if_data_is_set(
-        self, mock_init_prefix_and_record, mock_get_curate_datastructure_from_module_id
+        self,
+        mock_init_prefix_and_record,
+        mock_get_curate_datastructure_from_module_id,
     ):
         """test_init_prefix_and_record_called_if_data_is_set"""
 
@@ -864,7 +930,9 @@ class TestLocalIdRegistryModulePostRetrieveDataWithPID(TestCase):
         "_init_prefix_and_record"
     )
     def test_init_prefix_and_record_called_if_data_none(
-        self, mock_init_prefix_and_record, mock_get_curate_datastructure_from_module_id
+        self,
+        mock_init_prefix_and_record,
+        mock_get_curate_datastructure_from_module_id,
     ):
         """test_init_prefix_and_record_called_if_data_none"""
 
@@ -925,7 +993,9 @@ class TestLocalIdRegistryModulePostRetrieveDataWithoutPID(TestCase):
         "core_module_local_id_registry_app.views.views.LocalIdRegistryModule."
         "_init_prefix_and_record"
     )
-    def test_init_prefix_and_record_not_called(self, mock_init_prefix_and_record):
+    def test_init_prefix_and_record_not_called(
+        self, mock_init_prefix_and_record
+    ):
         """test_init_prefix_and_record_not_called"""
 
         self.module._retrieve_data(self.request)
@@ -1049,7 +1119,8 @@ class TestLocalIdRegistryModuleRenderModuleWithPID(TestCase):
         result = self.module._render_module(self.request)
 
         self.assertEqual(
-            result["context"]["default_input_module"], self.mock_abstract_render_module
+            result["context"]["default_input_module"],
+            self.mock_abstract_render_module,
         )
 
 
