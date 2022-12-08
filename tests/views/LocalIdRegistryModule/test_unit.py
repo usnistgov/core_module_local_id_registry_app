@@ -1,7 +1,6 @@
 """ Test units
 """
 
-import json
 from unittest.case import TestCase
 from unittest.mock import patch, Mock
 
@@ -13,7 +12,6 @@ from core_module_local_id_registry_app.views.views import LocalIdRegistryModule
 from tests import test_settings
 from tests.views.LocalIdRegistryModule.fixtures import (
     MockPID,
-    MockResponse,
     mock_return_fn_args_as_dict,
     MockProvider,
     MockData,
@@ -365,78 +363,70 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertEqual(self.module.error_data, mock_data)
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch(
         "core_module_local_id_registry_app.views.views.curate_data_structure_api"
     )
     def test_unexisting_record_keeps_prefix(
-        self, mock_curate_data_structure_api, mock_send_get_request
+        self, mock_curate_data_structure_api, mock_is_pid_defined
     ):
         """test_unexisting_record_keeps_prefix"""
 
         mock_curate_data_structure_api.return_value = None
-        mock_send_get_request.return_value = MockResponse(
-            text="", status_code=404
-        )
+        mock_is_pid_defined.return_value = False
 
         self.module._init_prefix_and_record(
             *self.set_default_test_data(as_string=True)
         )
         self.assertIsNotNone(self.module.default_prefix)
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch(
         "core_module_local_id_registry_app.views.views.curate_data_structure_api"
     )
     def test_unexisting_record_keeps_value(
-        self, mock_curate_data_structure_api, mock_send_get_request
+        self, mock_curate_data_structure_api, mock_is_pid_defined
     ):
         """test_unexisting_record_keeps_value"""
 
         mock_curate_data_structure_api.return_value = None
-        mock_send_get_request.return_value = MockResponse(
-            text="", status_code=404
-        )
+        mock_is_pid_defined.return_value = False
 
         self.module._init_prefix_and_record(
             *self.set_default_test_data(as_string=True)
         )
         self.assertIsNotNone(self.module.default_value)
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch(
         "core_module_local_id_registry_app.views.views.curate_data_structure_api"
     )
     def test_unexisting_record_sets_error_data_to_none(
-        self, mock_curate_data_structure_api, mock_send_get_request
+        self, mock_curate_data_structure_api, mock_is_pid_defined
     ):
         """test_unexisting_record_sets_error_data_to_none"""
 
         mock_curate_data_structure_api.return_value = None
-        mock_send_get_request.return_value = MockResponse(
-            text="", status_code=404
-        )
+        mock_is_pid_defined.return_value = False
 
         self.module._init_prefix_and_record(
             *self.set_default_test_data(as_string=True)
         )
         self.assertIsNone(self.module.error_data)
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_keeps_prefix(
         self,
         mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
-        mock_send_get_request,
+        mock_is_pid_defined,
     ):
         """test_editing_existing_record_keeps_prefix"""
 
         mock_data = MockData()
-        mock_send_get_request.return_value = MockResponse(
-            text=json.dumps(mock_data.to_json()), status_code=200
-        )
+        mock_is_pid_defined.return_value = True
         mock_curate_data_structure_api_get_by_id.return_value = (
             MockDataStructureApi(data=mock_data)
         )
@@ -450,21 +440,19 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             self.module.default_prefix, self.set_default_test_data()[0].prefix
         )
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_keeps_value(
         self,
         mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
-        mock_send_get_request,
+        mock_is_pid_defined,
     ):
         """test_editing_existing_record_keeps_value"""
 
         mock_data = MockData()
-        mock_send_get_request.return_value = MockResponse(
-            text=json.dumps(mock_data.to_json()), status_code=200
-        )
+        mock_is_pid_defined.return_value = True
         mock_curate_data_structure_api_get_by_id.return_value = (
             MockDataStructureApi(data=mock_data)
         )
@@ -478,21 +466,19 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             self.module.default_value, self.set_default_test_data()[0].value
         )
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_sets_error_data_to_none(
         self,
         mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
-        mock_send_get_request,
+        mock_is_pid_defined,
     ):
         """test_editing_existing_record_sets_error_data_to_none"""
 
         mock_data = {"id": "mock_id", "dict_content": {}}
-        mock_send_get_request.return_value = MockResponse(
-            text=json.dumps(mock_data), status_code=200
-        )
+        mock_is_pid_defined.return_value = True
         mock_curate_data_structure_api_get_by_id.return_value = {
             "data": mock_data
         }
@@ -504,24 +490,21 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertIsNone(self.module.error_data)
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_keeps_prefix(
         self,
         mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
-        mock_send_get_request,
+        mock_is_pid_defined,
     ):
         """test_duplicate_pid_keeps_prefix"""
 
         mock_data_1 = MockData(pk=1)
-        mock_data_2 = MockData(pk=2)
-        mock_send_get_request.return_value = MockResponse(
-            text=json.dumps(mock_data_1.to_json()), status_code=200
-        )
+        mock_is_pid_defined.return_value = True
         mock_curate_data_structure_api_get_by_id.return_value = (
-            MockDataStructureApi(data=mock_data_2)
+            MockDataStructureApi(data=mock_data_1)
         )
         mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
@@ -537,24 +520,21 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertEqual(self.module.default_prefix, mock_data.prefix)
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_keeps_value(
         self,
         mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
-        mock_send_get_request,
+        mock_is_pid_defined,
     ):
         """test_duplicate_pid_keeps_value"""
 
         mock_data_1 = MockData(pk=1)
-        mock_data_2 = MockData(pk=2)
-        mock_send_get_request.return_value = MockResponse(
-            text=json.dumps(mock_data_1.to_json()), status_code=200
-        )
+        mock_is_pid_defined.return_value = True
         mock_curate_data_structure_api_get_by_id.return_value = (
-            MockDataStructureApi(data=mock_data_2)
+            MockDataStructureApi(data=mock_data_1)
         )
         mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")
@@ -570,24 +550,21 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertEqual(self.module.default_value, mock_data.value)
 
-    @patch("core_module_local_id_registry_app.views.views.send_get_request")
+    @patch("core_linked_records_app.system.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_sets_error_data(
         self,
         mock_get_value_from_dot_notation,
         mock_curate_data_structure_api_get_by_id,
-        mock_send_get_request,
+        mock_is_pid_defined,
     ):
         """test_duplicate_pid_sets_error_data"""
 
         mock_data_1 = MockData(pk=1)
-        mock_data_2 = MockData(pk=2)
-        mock_send_get_request.return_value = MockResponse(
-            text=json.dumps(mock_data_1.to_json()), status_code=200
-        )
+        mock_is_pid_defined.return_value = True
         mock_curate_data_structure_api_get_by_id.return_value = (
-            MockDataStructureApi(data=mock_data_2)
+            MockDataStructureApi(data=mock_data_1)
         )
         mock_get_value_from_dot_notation.return_value = str(
             MockPID(prefix="mock_prefix_2", value="mock_record_2")

@@ -5,15 +5,14 @@ from re import match
 from core_curate_app.components.curate_data_structure import (
     api as curate_data_structure_api,
 )
+from core_main_registry_app.components.data.api import generate_unique_local_id
+from core_module_local_id_registry_app import settings
 from core_parser_app.components.data_structure_element import (
     api as data_structure_element_api,
 )
 from core_parser_app.tools.modules.views.builtin.input_module import (
     AbstractInputModule,
 )
-from core_main_app.utils.requests_utils.requests_utils import send_get_request
-from core_main_registry_app.components.data.api import generate_unique_local_id
-from core_module_local_id_registry_app import settings
 
 
 class LocalIdRegistryModule(AbstractInputModule):
@@ -86,6 +85,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         from core_linked_records_app.utils.dict import (
             get_value_from_dot_notation,
         )
+        from core_linked_records_app.system.api import is_pid_defined
         from core_linked_records_app.utils.providers import ProviderManager
 
         # If data is not empty and linked records installed, get record name and
@@ -114,11 +114,6 @@ class LocalIdRegistryModule(AbstractInputModule):
 
             assert record_format_match is not None
 
-            # Check that the URL is not already assigned.
-            record_response = send_get_request(
-                "%s?format=json" % data, allow_redirects=False
-            )
-
             # Retrieve curate data structure associated with the current form. Used
             # to check if the data being edited is the same as the one with the
             # assigned PID.
@@ -126,7 +121,7 @@ class LocalIdRegistryModule(AbstractInputModule):
                 curate_data_structure_id, user
             )
 
-            assert record_response.status_code == 404 or (
+            assert not is_pid_defined(data) or (
                 curate_data_structure_object.data is not None
                 and get_value_from_dot_notation(
                     curate_data_structure_object.data.get_dict_content(),

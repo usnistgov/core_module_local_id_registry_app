@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     # Local apps
     "core_main_app",
     "core_main_registry_app",
+    "core_linked_records_app",
     "core_parser_app",
     "core_curate_app",
     "tests",
