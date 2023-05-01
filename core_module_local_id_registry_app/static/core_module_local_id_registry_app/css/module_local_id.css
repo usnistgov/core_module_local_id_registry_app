@@ -8,3 +8,18 @@ div.mod-local-id {
 div.mod-local-id div.text {
     margin: 0.3em 0.1em;
 }
+
+/* Format PID host URL */
+div.mod-local-id div.pid-host-url {
+    margin: 0.3em;
+    padding: 0.25rem 0.5rem;
+    background-color: #ddd;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
+
+/* Format record input */
+div.mod-local-id div.mod_input input {
+    height: 2.2rem;
+    padding: 0.25rem;
+}

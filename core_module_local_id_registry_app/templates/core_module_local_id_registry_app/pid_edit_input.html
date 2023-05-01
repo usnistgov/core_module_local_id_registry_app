@@ -1,9 +1,9 @@
 <div class="mod-local-id">
-    <input class="pid-host-url" type="text" value="{{ pid_host_url }}" disabled>
+    <div class="pid-host-url">{{ pid_host_url }}</div>
     <div class="text">/</div>
     <select class="pid-prefix">
         {% for prefix in pid_prefixes %}
-            <option{% if prefix == default_prefix %} selected{% endif %}>{{ prefix }}</option>
+            <option>{% if prefix == default_prefix %} selected{% endif %}>{{ prefix }}</option>
         {% endfor %}
     </select>
     <div class="text">/</div>

@@ -7,7 +7,7 @@ let saveLocalIdModuleData = function(event) {
     let $module = $(this).parents(".module");
     let moduleLocalIdData = {
         "data": [
-            $module.find("input.pid-host-url").val(),
+            $module.find("div.pid-host-url").text(),
             $module.find("select.pid-prefix").val(),
             $module.find(".mod_input input").val()
         ].join("/")
@@ -15,14 +15,9 @@ let saveLocalIdModuleData = function(event) {
 
     saveModuleData($module, moduleLocalIdData);
 };
-
 $(document).ready(function() {
     // Register events on module widgets once the page is loaded.
     let $body = $("body");
     $body.on("blur", moduleLocalIdClass + " input[type='text']", saveLocalIdModuleData);
     $body.on("change", moduleLocalIdClass + " select", saveLocalIdModuleData);
-
-    // Fix hostname hidden if input is not wide enough.
-    let $pidHostURLInput = $("input.pid-host-url");
-    $pidHostURLInput.css("width",(($pidHostURLInput.val().length + 1) * 10) + "px");
 });
