@@ -3,7 +3,7 @@
     <div class="text">/</div>
     <select class="pid-prefix">
         {% for prefix in pid_prefixes %}
-            <option>{% if prefix == default_prefix %} selected{% endif %}>{{ prefix }}</option>
+            <option{% if prefix == default_prefix %} selected{% endif %}>{{ prefix }}</option>
         {% endfor %}
     </select>
     <div class="text">/</div>
