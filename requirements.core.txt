@@ -1,4 +1,4 @@
-core-main-app==2.4.*
-core-curate-app==2.4.*
-core-parser-app==2.4.*
-core-main-registry-app==2.4.*
+core-main-app==2.5.*
+core-curate-app==2.5.*
+core-parser-app==2.5.*
+core-main-registry-app==2.5.*
