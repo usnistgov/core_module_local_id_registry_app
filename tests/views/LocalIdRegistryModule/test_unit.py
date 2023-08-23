@@ -363,7 +363,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertEqual(self.module.error_data, mock_data)
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch(
         "core_module_local_id_registry_app.views.views.curate_data_structure_api"
     )
@@ -380,7 +380,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertIsNotNone(self.module.default_prefix)
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch(
         "core_module_local_id_registry_app.views.views.curate_data_structure_api"
     )
@@ -397,7 +397,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertIsNotNone(self.module.default_value)
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch(
         "core_module_local_id_registry_app.views.views.curate_data_structure_api"
     )
@@ -414,7 +414,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
         )
         self.assertIsNone(self.module.error_data)
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_keeps_prefix(
@@ -440,7 +440,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             self.module.default_prefix, self.set_default_test_data()[0].prefix
         )
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_keeps_value(
@@ -466,7 +466,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
             self.module.default_value, self.set_default_test_data()[0].value
         )
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_editing_existing_record_sets_error_data_to_none(
@@ -490,7 +490,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertIsNone(self.module.error_data)
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_keeps_prefix(
@@ -520,7 +520,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertEqual(self.module.default_prefix, mock_data.prefix)
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_keeps_value(
@@ -550,7 +550,7 @@ class TestLocalIdRegistryModuleInitPrefixAndRecord(TestCase):
 
         self.assertEqual(self.module.default_value, mock_data.value)
 
-    @patch("core_linked_records_app.system.api.is_pid_defined")
+    @patch("core_linked_records_app.system.data.api.is_pid_defined")
     @patch("core_curate_app.components.curate_data_structure.api.get_by_id")
     @patch("core_linked_records_app.utils.dict.get_value_from_dot_notation")
     def test_duplicate_pid_sets_error_data(

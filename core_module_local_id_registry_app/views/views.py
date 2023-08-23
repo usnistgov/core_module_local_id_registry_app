@@ -85,7 +85,7 @@ class LocalIdRegistryModule(AbstractInputModule):
         from core_linked_records_app.utils.dict import (
             get_value_from_dot_notation,
         )
-        from core_linked_records_app.system.api import is_pid_defined
+        from core_linked_records_app.system.data.api import is_pid_defined
         from core_linked_records_app.utils.providers import ProviderManager
 
         # If data is not empty and linked records installed, get record name and
