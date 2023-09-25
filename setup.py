@@ -26,7 +26,7 @@ chdir(normpath(join(abspath(__file__), pardir)))
 
 setup(
     name="core_module_local_id_registry_app",
-    version="2.5.0",
+    version="2.6.0",
     description="Local id registry module",
     long_description=long_desc,
     author="NIST IT Lab",
