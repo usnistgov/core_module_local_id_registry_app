@@ -39,7 +39,7 @@ class LocalIdRegistryModule(AbstractInputModule):
 
             # Retrieve PID settings
             self.pid_settings = {
-                "xpath": linked_records_settings.PID_XPATH,
+                "path": linked_records_settings.PID_PATH,
                 "format": linked_records_settings.PID_FORMAT,
                 "system": linked_records_settings.ID_PROVIDER_SYSTEM_NAME,
                 "prefixes": linked_records_settings.ID_PROVIDER_PREFIXES,
@@ -125,7 +125,7 @@ class LocalIdRegistryModule(AbstractInputModule):
                 curate_data_structure_object.data is not None
                 and get_value_from_dot_notation(
                     curate_data_structure_object.data.get_dict_content(),
-                    self.pid_settings["xpath"],
+                    self.pid_settings["path"],
                 )
                 == data
             )

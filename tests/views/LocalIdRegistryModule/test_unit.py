@@ -76,7 +76,7 @@ class TestLocalIdRegistryModuleInitWithPID(TestCase):
         self.assertEqual(
             self.module.pid_settings,
             {
-                "xpath": test_settings.PID_XPATH,
+                "path": test_settings.PID_PATH,
                 "format": test_settings.PID_FORMAT,
                 "system": test_settings.ID_PROVIDER_SYSTEM_NAME,
                 "prefixes": test_settings.ID_PROVIDER_PREFIXES,

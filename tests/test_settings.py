@@ -32,7 +32,7 @@ DATABASES = {
 
 SERVER_URI = "http://hostname.com"
 
-PID_XPATH = "mock.xpath"
+PID_PATH = "mock.path"
 
 PID_FORMAT = r"[a-zA-Z0-9_\-]+"
 
