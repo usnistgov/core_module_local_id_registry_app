@@ -1,5 +1,6 @@
 """ Fixtures for LocalId module tests
 """
+
 from urllib.parse import urljoin
 
 from tests import test_settings

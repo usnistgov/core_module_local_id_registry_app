@@ -1,5 +1,6 @@
 """ Local Id Registry Module
 """
+
 from re import match
 
 from core_curate_app.components.curate_data_structure import (
@@ -266,9 +267,11 @@ class LocalIdRegistryModule(AbstractInputModule):
             )
 
             context = {
-                "pid_host_url": pid_default_url
-                if pid_default_url.rsplit("/", 1)[-1] != ""
-                else pid_default_url.rsplit("/", 1)[0],
+                "pid_host_url": (
+                    pid_default_url
+                    if pid_default_url.rsplit("/", 1)[-1] != ""
+                    else pid_default_url.rsplit("/", 1)[0]
+                ),
                 "pid_prefixes": self.pid_settings["prefixes"],
                 "default_prefix": self.default_prefix,
                 "default_input_module": module_template,
