@@ -231,7 +231,7 @@ class LocalIdRegistryModule(AbstractInputModule):
             context = {
                 "icon": "fa-times-circle",
                 "type": "danger",
-                "message": "An unexpected error occured while checking record "
+                "message": "An unexpected error occurred while checking record "
                 "existence. Please contact your administrator.",
             }
         else:
