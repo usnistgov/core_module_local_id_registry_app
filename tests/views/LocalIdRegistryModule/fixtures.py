@@ -1,5 +1,4 @@
-""" Fixtures for LocalId module tests
-"""
+"""Fixtures for LocalId module tests"""
 
 from urllib.parse import urljoin
 

@@ -1,5 +1,4 @@
-""" Local Id Registry Module
-"""
+"""Local Id Registry Module"""
 
 from re import match
 

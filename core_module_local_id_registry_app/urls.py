@@ -1,5 +1,4 @@
-""" Url router for the local id registry module
-"""
+"""Url router for the local id registry module"""
 
 from django.urls import re_path
 
